@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap" />
+    <title>Live Action Theatre Seat Booking</title>
+    <style>
+      body {
+        font-family: "Lexend", sans-serif; /* Adding Lexend font */
+        background-color: #4f3397;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        text-align: center;
+        width: 70%;
+        background: #7654cf;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .popup input[type="text"],
+      .popup input[type="email"] {
+        border-radius: 5px; /* Rounded corners */
+        background-color: #ccc; /* Grey background */
+        border: none; /* No outline */
+        padding: 8px; /* Padding for better visual */
+      }
+
+      .stage {
+        background: #333;
+        height: 70px;
+        margin-bottom: 20px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        font-size: 1.5em;
+      }
+
+      .seating-plan {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .row {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+
+      .seat {
+        background: #ccc;
+        height: 30px;
+        width: 30px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+        margin: 2px;
+      }
+
+      .seat.selected {
+        background: #6c6;
+      }
+
+      .seat.occupied {
+        background: #666;
+        cursor: not-allowed;
+      }
+
+      .seat span {
+        font-size: 0.8em;
+        display: none;
+      }
+
+      .row-label {
+        margin-right: 10px;
+      }
+
+      .info {
+        margin-top: 20px;
+      }
+
+      #confirm-button {
+        padding: 10px 20px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      #confirm-button:hover {
+        background: #218838;
+      }
+
+      .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+      }
+
+      .popup .popup-content {
+        text-align: center;
+      }
+
+      .popup button {
+        padding: 10px 20px;
+        margin: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .popup button.cancel {
+        background: #dc3545;
+        color: white;
+      }
+
+      .popup button.send {
+        background: #28a745;
+        color: white;
+      }
+
+      #overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+      }
+
+      .row.A,
+      .row.B {
+        justify-content: flex-start;
+        margin-left: 20lvh;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Book Your Seat</h1>
+      <div class="stage">Stage</div>
+      <div class="seating-plan">
+        <!-- Seating plan will be generated here by JavaScript -->
+      </div>
+      <div class="info">
+        <p id="selected-seats">Selected Seats: 0</p>
+        <button id="confirm-button">Confirm Booking</button>
+      </div>
+    </div>
+    <div id="overlay"></div>
+    <div class="popup" id="popup">
+      <div class="popup-content">
+        <h2>Confirm Booking</h2>
+        <label for="name">Name: </label>
+        <input type="text" id="name" name="name" /><br /><br />
+        <label for="email">Email: </label>
+        <input type="email" id="email" name="email" /><br /><br />
+        <p id="popup-seats"></p>
+        <button class="cancel" id="cancel-button">Cancel</button>
+        <button class="send" id="send-button">Send</button>
+      </div>
+    </div>
+    <script>
+      const seatingPlanContainer = document.querySelector(".seating-plan");
+      const selectedSeatsElement = document.getElementById("selected-seats");
+      const confirmButton = document.getElementById("confirm-button");
+      const overlay = document.getElementById("overlay");
+      const popup = document.getElementById("popup");
+      const nameField = document.getElementById("name");
+      const emailField = document.getElementById("email");
+      const popupSeats = document.getElementById("popup-seats");
+      const cancelButton = document.getElementById("cancel-button");
+      const sendButton = document.getElementById("send-button");
+
+      let selectedSeats = [];
+
+      function generateSeats(rowsData) {
+        rowsData.forEach((rowData, rowIndex) => {
+          const rowElement = document.createElement("div");
+          rowElement.classList.add("row");
+
+          // Add class for specific rows
+          if (rowData.row === "A" || rowData.row === "B") {
+            rowElement.classList.add(rowData.row);
+          }
+
+          const rowLabel = document.createElement("div");
+          rowLabel.classList.add("row-label");
+          rowLabel.textContent = rowData.row;
+          rowElement.appendChild(rowLabel);
+
+          for (let col = 1; col <= rowData.seats; col++) {
+            const seat = document.createElement("div");
+            seat.classList.add("seat");
+            const seatId = `${rowData.row}${col}`;
+            if (rowData.occupiedSeats.includes(seatId)) {
+              seat.classList.add("occupied");
+            }
+            seat.dataset.row = rowIndex;
+            seat.dataset.col = col - 1;
+            seat.dataset.seat = seatId;
+            seat.innerHTML = `<span>${col}</span>`;
+            seat.addEventListener("click", () => selectSeat(rowIndex, col - 1));
+            rowElement.appendChild(seat);
+
+            // Add black square after the 9th seat for rows M and N
+            if ((rowData.row === "M" || rowData.row === "N") && col === 9) {
+              const blackSquare = document.createElement("div");
+              blackSquare.classList.add("black-square");
+              rowElement.appendChild(blackSquare);
+            }
+          }
+
+          seatingPlanContainer.appendChild(rowElement);
+        });
+      }
+
+      function selectSeat(row, col) {
+        const seatElement = document.querySelector(
+          `.seat[data-row="${row}"][data-col="${col}"]`
+        );
+        if (seatElement.classList.contains("occupied")) return;
+
+        const seatIndex = selectedSeats.findIndex(
+          (seat) => seat.row === row && seat.col === col
+        );
+
+        // If the seat is already selected, remove it
+        if (seatIndex !== -1) {
+          selectedSeats.splice(seatIndex, 1);
+        } else {
+          // Check if the maximum number of seats has been reached
+          if (selectedSeats.length >= 4) {
+            alert("You can only select up to 4 seats.");
+            return;
+          }
+          // If not already selected and maximum not reached, add the seat
+          selectedSeats.push({ row, col });
+        }
+        updateSeats();
+      }
+
+      function updateSeats() {
+        const seats = document.querySelectorAll(".seat");
+        seats.forEach((seat) => {
+          const row = parseInt(seat.dataset.row);
+          const col = parseInt(seat.dataset.col);
+          seat.classList.remove("selected");
+          if (
+            selectedSeats.find((seat) => seat.row === row && seat.col === col)
+          ) {
+            seat.classList.add("selected");
+          }
+        });
+        selectedSeatsElement.textContent = `Selected Seats: ${selectedSeats.length}`;
+      }
+
+      confirmButton.addEventListener("click", () => {
+        if (selectedSeats.length > 0) {
+          popupSeats.textContent = `Selected Seats: ${selectedSeats
+            .map((seat) => String.fromCharCode(65 + seat.row) + (seat.col + 1))
+            .join(", ")}`;
+          overlay.style.display = "block";
+          popup.style.display = "block";
+        } else {
+          alert("No seats selected!");
+        }
+      });
+
+      cancelButton.addEventListener("click", () => {
+        overlay.style.display = "none";
+        popup.style.display = "none";
+      });
+
+      sendButton.addEventListener("click", async () => {
+        const name = nameField.value.trim();
+        const email = emailField.value.trim();
+        if (name === "" || email === "") {
+          alert("Please enter your name and email!");
+          return;
+        }
+
+        if (selectedSeats.length > 0) {
+          const seatList = selectedSeats
+            .map((seat) => String.fromCharCode(65 + seat.row) + (seat.col + 1))
+            .join(", ");
+
+          const webhookUrl =
+            "https://discord.com/api/webhooks/1249783588124098624/T-vTEvBmjfVnFjHRn3gaYVhcrKqzKwfug4NDndRufiR9NMNu1Jtwrd6gcskPrFm9nEv2"; // Add your Discord webhook URL here
+          await fetch(webhookUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              embeds: [
+                {
+                  title: "New Booking",
+                  fields: [
+                    { name: "Name", value: name },
+                    { name: "Email", value: email },
+                    { name: "Seats", value: seatList },
+                  ],
+                  color: 3066993,
+                },
+              ],
+            }),
+          });
+
+          alert(`You have booked ${selectedSeats.length} seats.`);
+          selectedSeats = [];
+          updateSeats();
+          overlay.style.display = "none";
+          popup.style.display = "none";
+        } else {
+          alert("No seats selected!");
+        }
+      });
+
+      // Example data: Replace this with your dynamic data
+      const rowsData = [
+        {
+          row: "A",
+          seats: 15,
+          occupiedSeats: [
+            "A1",
+            "A2",
+            "A3",
+            "A4",
+            "A5",
+            "A6",
+            "A7",
+            "A8",
+            "A9",
+            "A10",
+            "A11",
+            "A12",
+            "A13",
+            "A14",
+            "A15",
+          ],
+        },
+        { row: "B", seats: 15, occupiedSeats: [] },
+        { row: "C", seats: 20, occupiedSeats: [] },
+        { row: "D", seats: 20, occupiedSeats: [] },
+        { row: "E", seats: 20, occupiedSeats: [] },
+        { row: "F", seats: 20, occupiedSeats: [] },
+        { row: "G", seats: 25, occupiedSeats: [] },
+        { row: "H", seats: 25, occupiedSeats: [] },
+        { row: "I", seats: 25, occupiedSeats: [] },
+        { row: "J", seats: 25, occupiedSeats: [] },
+        { row: "K", seats: 25, occupiedSeats: [] },
+        { row: "L", seats: 25, occupiedSeats: [] },
+        { row: "M", seats: 18, occupiedSeats: [] },
+        { row: "N", seats: 18, occupiedSeats: [] },
+
+        // Add more rows as needed
+      ];
+
+      generateSeats(rowsData);
+    </script>
+  </body>
+</html>
