@@ -1348,30 +1348,7 @@
         <p2 class="text-[30px] text-black dark:text-white"
           >Availability per service</p2
         ><br />
-        <p2 class="text-[15px] text-black dark:text-white"
-          >Refresh in: <span id="refreshcountdown"></span> seconds</p2
-        >
       </div>
-      <script>
-        // JavaScript code to implement countdown and page refresh
-        let countdown = 15; // Initial countdown value
-
-        function updateCountdown() {
-          document.getElementById("refreshcountdown").textContent = countdown;
-          countdown--;
-
-          if (countdown < 0) {
-            // Refresh the page when countdown reaches 0
-            location.reload();
-          } else {
-            // Schedule the next update after 1 second
-            setTimeout(updateCountdown, 1000);
-          }
-        }
-
-        // Start the countdown
-        updateCountdown();
-      </script>
       <div class="flex items-center space-x-2">
         <div class="w-3 h-3 bg-[#01e6ce] rounded-full inline-block"></div>
         <p class="text-[#01e6ce] inline-block">Operational</p>
@@ -1384,6 +1361,7 @@
         <p class="dark:text-[#848482] text-[#000000] inline-block">Offline</p>
       </div>
     </div>
+    <!-- Cluster Grid -->
     <!-- Cluster Grid -->
     <div class="ml-10">
       <div class="ml-20">
@@ -1428,105 +1406,69 @@
         </div>
       </div>
     </div>
-    <script>
-      const serverUrl = "http://eu7.diresnode.com:6004/";
 
-      // Fetch data from the server
-      async function fetchClusterData() {
+    <script>
+      // Function to check server status
+      async function checkServerStatus(url, clusterId) {
+        const clusterElement = document.querySelector(
+          `[data-cluster="${clusterId}"]`
+        );
+
         try {
-          const response = await fetch(serverUrl);
-          if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-          }
-          const data = await response.json();
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 10000); // 10-second timeout
 
-          // Process and update grid items
-          data.clusters.forEach((cluster, index) => {
-            const gridItem = document.querySelector(
-              `.cluster-grid-item[data-cluster="${index}"]`
-            );
-            const popup = document.getElementById(`popup-${index}`);
+          console.log(`Checking cluster ${clusterId} at ${url}`);
+          const response = await fetch(url, { signal: controller.signal });
+          clearTimeout(timeoutId);
 
-            if (gridItem && popup) {
-              // Update text and colors
-              gridItem.style.color = getStatusColor(cluster.status);
-              popup.querySelector("#uptime-" + index).textContent =
-                cluster.uptime || "N/A";
-              popup.innerHTML = `
-            <div>Cluster ${index}</div>
-            <div>Shards: ${cluster.shards || "N/A"}</div>
-            <div>Uptime: ${cluster.uptime || "N/A"}</div>
-            <div><strong>${
-              cluster.unavailableShards || 0
-            } Shard(s) unavailable</strong></div>
-          `;
-            }
-          });
-        } catch (error) {
-          console.error("Failed to fetch data:", error);
-        }
-      }
+          if (response.ok) {
+            const data = await response.json(); // Parse JSON response
+            console.log("Response data:", data);
 
-      // Helper function to determine status color
-      function getStatusColor(status) {
-        switch (status) {
-          case "Operational":
-            return "#01e6ce";
-          case "Partial Outage":
-            return "#ff9b00";
-          case "Major Outage":
-            return "#ff414b";
-          case "Offline":
-            return "#848482";
-          default:
-            return "#000000";
-        }
-      }
-
-      // Fetch data on page load
-      fetchClusterData();
-
-      // Optional: Auto-refresh data every 15 seconds
-      setInterval(fetchClusterData, 15000);
-    </script>
-    <script>
-      document.addEventListener("DOMContentLoaded", async function () {
-        const fetchClusterData = async () => {
-          try {
-            const response = await fetch(
-              "/.netlify/functions/getClusterStatus"
-            );
-            const clusters = await response.json();
-
-            clusters.forEach((cluster) => {
-              const clusterElement = document.querySelector(
-                `[data-cluster="${cluster.clusterId}"]`
+            // Check server operational status
+            if (data.operational === true) {
+              clusterElement.classList.remove(
+                "text-red-500",
+                "dark:text-red-500"
               );
-
-              if (clusterElement) {
-                clusterElement.style.color = cluster.color;
-
-                const popup = clusterElement.querySelector(".cluster-popup");
-                if (popup) {
-                  popup.querySelector(
-                    ".shards"
-                  ).textContent = `Shards: ${cluster.shards}`;
-                  popup.querySelector(
-                    ".problems"
-                  ).textContent = `${cluster.problems} Shard(s) unavailable`;
-                  popup.querySelector(".uptime").textContent = cluster.uptime;
-                }
-              }
-            });
-          } catch (err) {
-            console.error("Failed to fetch cluster data", err);
+              clusterElement.classList.add(
+                "text-[#000000]",
+                "dark:text-[#848482]"
+              );
+              clusterElement.textContent = `${clusterId}`;
+            } else {
+              throw new Error("Server not operational");
+            }
+          } else {
+            throw new Error(`Server unreachable. Status: ${response.status}`);
           }
-        };
+        } catch (error) {
+          console.error(`Cluster ${clusterId} error:`, error);
 
-        fetchClusterData();
+          // Server is offline
+          clusterElement.classList.remove(
+            "text-[#000000]",
+            "dark:text-[#848482]"
+          );
+          clusterElement.classList.add("text-red-500", "dark:text-red-500");
+          clusterElement.textContent = `${clusterId}`;
+        }
+      }
 
-        // Your existing code for uptime update and popup toggle...
-      });
+      // Define cluster URLs and their IDs
+      const clusters = [
+        { url: "https://eu7.diresnode.com:6004/cluster-0", id: 0 },
+        { url: "https://eu7.diresnode.com:6004/cluster-1", id: 1 },
+        { url: "https://eu7.diresnode.com:6004/cluster-2", id: 2 },
+      ];
+
+      // Periodically check server statuses
+      setInterval(() => {
+        clusters.forEach((cluster) =>
+          checkServerStatus(cluster.url, cluster.id)
+        );
+      }, 10000); // Check every 10 seconds
     </script>
 
     <!-- End Cluster Grid -->
@@ -1538,8 +1480,8 @@
           class="flex gap-4 mt-20 items-center justify-center flex-wrap transition-opacity duration-500 opacity-0"
           id="footer">
           <p>
-            Flexa Bot: Empowering Communities | Copyright 2024 © Flexa Group.
-            All rights reserved. <a href="sitemap.html">Site map</a>
+            Flexa: Empowering Communities | Copyright 2024 © Flexa Group. All
+            rights reserved. <a href="sitemap.html">Site map</a>
           </p>
           <a
             href="https://www.instagram.com/flexagroupofficial/"
