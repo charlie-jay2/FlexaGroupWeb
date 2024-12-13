@@ -1,0 +1,30 @@
+name: Deploy Status Bar
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to deploy"
+        required: true
+        default: "main"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Deploy status to specific files
+        run: |
+          cp -r ./path/to/admin.html ./dist/
+          cp -r ./path/to/careers.html ./dist/
+          cp -r ./path/to/home.html ./dist/
+          git add -A
+          git commit -m "Deploy status to home.html and careers.html"
+          git push
+        working-directory: ./
