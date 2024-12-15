@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Video and Buttons</title>
+  </head>
+  <body>
+    <div class="video">
+      <video id="myVideo" width="100%" height="auto" autoplay no-controls>
+        <source src="assets/vidcard.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <div class="button">
+      <a
+        href="https://mail.google.com/mail/?view=cm&fs=1&to=flexagroupofficial@gmail.com"
+        target="_blank">
+        <img src="/assets/contact button.jpg" class="contact-btn" />
+      </a>
+      <img src="/assets/add button.jpg" class="add-btn" />
+    </div>
+
+    <script>
+      var video = document.getElementById("myVideo");
+      var playCount = 0;
+
+      video.onended = function () {
+        playCount++;
+        if (playCount < 2) {
+          video.play();
+        }
+      };
+    </script>
+  </body>
+</html>

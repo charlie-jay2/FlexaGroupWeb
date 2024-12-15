@@ -1,0 +1,104 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  background-image: url("assets/Site_Background.jpg");
+  background-size: cover;
+  background-position: 0px -32px;
+  background-repeat: no-repeat;
+  height: 100%;
+}
+
+.video {
+  position: absolute;
+  bottom: 190px;
+  right: 96px;
+  width: 700px;
+  height: auto;
+  z-index: 1000;
+}
+
+.button {
+  position: absolute;
+  bottom: 2px;
+  right: 36px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.contact-btn {
+  opacity: 1; /* Contact Us button should not be grayed out */
+}
+
+.add-btn {
+  opacity: 0.5; /* Add Server button should be grayed out */
+}
+
+.button img:first-child {
+  transform: scale(0.7);
+  margin-right: -60px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.button img:last-child {
+  transform: scale(0.7);
+  margin-left: -30px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.button img:first-child:hover {
+  transform: scale(0.75);
+  transition: transform 0.3s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  body {
+    background-image: url("assets/Site_Mobile_1.jpeg");
+    background-size: 105%; /* Scale the image to prevent clipping */
+    background-position: center center; /* Ensure the image is centered */
+    background-repeat: no-repeat;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .video {
+    width: 80%; /* Adjust the width for smaller screens */
+    height: auto;
+    left: 50%;
+    transform: translateX(-50%); /* Center the video horizontally */
+    margin-top: 220px; /* Add space above the video */
+    bottom: unset; /* Remove the previous bottom positioning */
+    top: 0; /* Set the video at the top of the screen */
+  }
+
+  .button {
+    position: relative;
+    bottom: -170px;
+    right: -10px;
+    display: flex;
+    flex-direction: column; /* Stack the buttons vertically */
+    justify-content: center;
+    transform: scale(0.7); /* Scale down the buttons */
+  }
+
+  /* Make the buttons stack vertically with spacing */
+  .button img {
+    margin-bottom: 10px; /* Add space between the buttons */
+  }
+
+  /* Make sure the contact button is fully visible */
+  .contact-btn {
+    opacity: 1; /* Full opacity for Contact Us on mobile */
+  }
+
+  /* Make sure the Add Server button is semi-transparent */
+  .add-btn {
+    opacity: 0.5; /* Semi-transparent for Add Server on mobile */
+  }
+}
