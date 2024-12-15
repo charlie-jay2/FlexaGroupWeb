@@ -33,11 +33,8 @@
         height="auto"
         autoplay
         playsinline
-        muted
-        no-controls>
-        <source
-          src="https://www.flexagroup.co.uk/assets/vidcard.mp4"
-          type="video/mp4" />
+        controls>
+        <source src="assets/vidcard.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     </div>
@@ -51,20 +48,13 @@
     </div>
 
     <script>
-      // Wait for the page to load, then play the video and unmute it
-      window.onload = function () {
-        var video = document.getElementById("myVideo");
-        video.play(); // Play the video when the page loads
-        video.muted = false; // Unmute the video instantly
-      };
-
+      var video = document.getElementById("myVideo");
       var playCount = 0;
 
-      // Repeat video if it ends
-      document.getElementById("myVideo").onended = function () {
+      video.onended = function () {
         playCount++;
         if (playCount < 2) {
-          this.play(); // Replay the video once
+          video.play();
         }
       };
     </script>
