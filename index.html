@@ -41,73 +41,135 @@
         visibility: hidden;
       }
 
-      .server-btn {
-        width: 300px;
-        margin-left: 115vh;
-        margin-top: 40vh;
+      .textbox-container {
+        position: relative; /* Makes this the reference for positioning */
+        width: 500px; /* Match container width */
+        height: 500px;
+        margin: 15vh 0 0 10vh;
+      }
+
+      .textbox {
+        width: 80%; /* Fit container */
         height: auto;
-        z-index: 0; /* Default z-index */
-        transition: z-index 0s; /* Make sure it doesn't change before video ends */
+      }
+
+      .textboxtext {
+        position: absolute;
+        top: 19%; /* Adjust higher */
+        left: 5%;
+        z-index: 1000;
+        width: 70%; /* Relative to container */
+      }
+
+      .textboxbutton {
+        position: absolute;
+        top: 72%; /* Adjust higher */
+        left: 6.5%;
+        z-index: 1000;
+        width: 25%; /* Relative to container */
+        transition: transform 0.6s ease-in-out;
+      }
+
+      .textboxbutton:hover {
+        transform: scale(1.05); /* Slightly enlarge buttons on hover */
+        transition: transform 0.6s ease-in-out;
+      }
+
+      .button1,
+      .button2,
+      .button3 {
+        display: block; /* Stack the buttons vertically */
+        width: 360px; /* Keeps the button width consistent */
+        height: auto;
+        margin-bottom: 5px; /* Tiny gap between buttons */
+        transition: transform 0.6s ease-in-out;
+        z-index: 1000;
+      }
+
+      .button1 {
+        opacity: 0.6;
+      }
+
+      /* Hover effect for button2 and button3 */
+      .button2:hover,
+      .button3:hover {
+        transform: scale(1.05); /* Slightly enlarge buttons on hover */
+        transition: transform 0.6s ease-in-out; /* Ensure smooth transition on hover */
+        cursor: pointer;
+      }
+
+      .button-container {
+        position: absolute;
+        top: 14%; /* Adjust higher */
+        left: 70%;
+        z-index: 1000;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          background-image: url("./assets/mobile/Phone_site_background_1.jpeg"); /* Use mobile-specific background */
+          background-size: cover;
+          background-position: -5% center; /* Move background 2% to the left */
+          background-repeat: no-repeat;
+        }
+        .textbox-container,
+        .textbox,
+        .textboxtext {
+          opacity: 0;
+        }
+
+        .button-container {
+          left: 2.6%;
+          transform: scale(0.9);
+        }
+
+        .textboxbutton {
+          margin-left: 27%;
+          margin-top: 20%;
+          transform: scale(3);
+          z-index: 1000;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="video" id="videoContainer">
-      <video
-        id="myVideo"
-        width="100%"
-        height="auto"
-        playsinline
-        controls
-        controlsList="nodownload noplaybackrate novolume nofullscreen"
-        disablePictureInPicture>
-        <source src="assets/vidcard.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+    <audio id="audio" src="./assets/induction.wav" preload="auto"></audio>
+
+    <div class="textbox-container">
+      <img src="./assets/text/textbox.png" class="textbox" draggable="false" />
+      <img
+        src="./assets/text/text here.png"
+        class="textboxtext"
+        draggable="false" />
     </div>
-    <div class="button">
+    <img
+      src="./assets/text/coming_2025.png"
+      class="textboxbutton"
+      draggable="false" />
+    <div class="button-container">
+      <img
+        src="./assets/Buttons/ADD REFLECTION TO YOUR SERVER.png"
+        class="button1"
+        draggable="false" />
       <a
-        href="https://mail.google.com/mail/?view=cm&fs=1&to=flexagroupofficial@gmail.com"
-        target="_blank">
-        <img src="/assets/contact button.jpg" class="contact-btn" />
-      </a>
-      <a href="https://discord.gg/U2tQA7UVeY" target="_blank"
-        ><img src="/assets/add button.jpg" class="add-btn"
+        ><img
+          src="./assets/Buttons/GET IN TOUCH.png"
+          class="button2"
+          draggable="false"
+      /></a>
+      <a
+        ><img
+          src="./assets/Buttons/JOIN THE OFFICIAL COMMUNITY.png"
+          class="button3"
+          draggable="false"
       /></a>
     </div>
-
-    <a href="https://discord.gg/U2tQA7UVeY" target="_blank"
-      ><img src="/assets/join server button.jpeg" class="server-btn"
-    /></a>
-
-    <script>
-      var video = document.getElementById("myVideo");
-      var videoContainer = document.getElementById("videoContainer");
-      var serverBtn = document.querySelector(".server-btn");
-      var playCount = 0; // Track number of times video ends
-
-      // Autoplay the video when the page loads
-      window.onload = function () {
-        video.play();
-      };
-
-      // Loop once and stop after the second playback
-      video.onended = function () {
-        playCount++;
-        if (playCount < 1) {
-          video.play(); // Replay the video for the second time
-        } else {
-          // After the second play, wait for 5 seconds, then fade and hide the video
-          setTimeout(function () {
-            // Apply fade-out effect
-            videoContainer.classList.add("fade-out");
-            setTimeout(function () {
-              videoContainer.classList.add("hidden"); // Completely hide the video container after fading
-              serverBtn.style.zIndex = "1000"; // Bring the server button on top
-            }, 1000); // Wait for the fade transition to complete
-          }, 1000); // Wait 5 seconds before starting the fade-out
-        }
-      };
-    </script>
   </body>
+  <script>
+    // Play the audio only once when the page loads
+    window.onload = function () {
+      var audio = document.getElementById("audio");
+      audio.play();
+    };
+  </script>
 </html>
