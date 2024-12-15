@@ -50,7 +50,6 @@
 
     <style>
       /* Hide unwanted video controls */
-      video::-webkit-media-controls-play-button,
       video::-webkit-media-controls-current-time-display,
       video::-webkit-media-controls-time-remaining-display,
       video::-webkit-media-controls-timeline {
@@ -68,10 +67,13 @@
         display: none;
       }
 
-      /* Set height of controls to hide them completely if needed */
+      /* Remove black gradient on video controls */
+      video::-webkit-media-controls-panel {
+        background: transparent;
+      }
+
       video::-webkit-media-controls {
-        height: 0 !important;
-        visibility: hidden;
+        background-color: transparent !important;
       }
     </style>
 
