@@ -9,7 +9,9 @@
     <meta
       property="og:description"
       content="Reflection Bot by Flexa Group, Under Construction." />
-    <meta property="og:image" content="assets/logo.png" />
+    <meta
+      property="og:image"
+      content="https://www.flexagroup.co.uk/assets/logo.png" />
     <meta property="og:url" content="https://flexagroup.co.uk" />
     <meta property="og:type" content="website" />
 
@@ -18,7 +20,9 @@
     <meta
       name="twitter:description"
       content="Reflection Bot by Flexa Group, Under Construction." />
-    <meta name="twitter:image" content="assets/logo.png" />
+    <meta
+      name="twitter:image"
+      content="https://www.flexagroup.co.uk/assets/logo.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="assets/logo-favicon.png" type="image/png" />
 
@@ -50,44 +54,28 @@
 
     <style>
       /* Style the video timeline (progress bar) */
-      video::-webkit-media-controls-timeline {
+      video::-webkit-media-controls {
         background-color: transparent; /* Make the timeline background transparent */
-        color: aqua; /* Aqua for text like time labels */
+        color: black; /* Set text color to black (for time labels, etc.) */
         border-radius: 5px; /* Optional: Rounded edges */
       }
 
-      /* Style the current time display */
-      video::-webkit-media-controls-current-time-display {
-        color: aqua; /* Aqua for the current time */
+      /* Style the controls panel with gradient and black text */
+      video::-webkit-media-controls-panel {
+        background: linear-gradient(
+          0deg,
+          /* Vertical gradient direction */ rgba(0, 255, 255, 1) 0%,
+          /* Aqua fully opaque */ rgba(0, 255, 255, 0) 20%,
+          /* Fade to transparent after a small portion */ rgba(0, 0, 0, 0) 200%,
+          /* Transparent */ rgba(0, 0, 0, 1) 100% /* Black */
+        );
+        color: black; /* Make text in controls black */
       }
 
-      /* Style the time remaining display */
+      /* Style the current time and duration text to be black */
+      video::-webkit-media-controls-current-time-display,
       video::-webkit-media-controls-time-remaining-display {
-        color: aqua; /* Aqua for the time remaining */
-      }
-
-      /* Optional: Customize the timeline hover behavior */
-      video::-webkit-media-controls-timeline:hover {
-        background-color: rgba(0, 255, 255, 0.2); /* Light aqua on hover */
-      }
-
-      /* Style the play/pause button */
-      video::-webkit-media-controls-play-button {
-        color: aqua !important; /* Aqua triangle/parallel lines */
-        background-color: transparent !important; /* Transparent background */
-        border: none !important; /* Remove borders */
-        width: 40px !important;
-        height: 40px !important;
-        opacity: 1 !important; /* Always visible */
-      }
-
-      /* Force visibility of controls */
-      video::-webkit-media-controls {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        opacity: 1 !important;
-        background: none !important;
+        color: black !important; /* Ensure the time text is black */
       }
     </style>
 
