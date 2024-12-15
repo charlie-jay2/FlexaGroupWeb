@@ -33,7 +33,9 @@
         height="auto"
         autoplay
         playsinline
-        controls>
+        controls
+        controlsList="nodownload noplaybackrate novolume nofullscreen"
+        disablePictureInPicture>
         <source src="assets/vidcard.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
@@ -46,6 +48,33 @@
       </a>
       <img src="/assets/add button.jpg" class="add-btn" />
     </div>
+
+    <style>
+      /* Hide unwanted video controls */
+      video::-webkit-media-controls-play-button,
+      video::-webkit-media-controls-current-time-display,
+      video::-webkit-media-controls-time-remaining-display,
+      video::-webkit-media-controls-timeline {
+        display: none;
+      }
+
+      /* Hide fullscreen button */
+      video::-webkit-media-controls-fullscreen-button {
+        display: none;
+      }
+
+      /* Hide volume controls */
+      video::-webkit-media-controls-volume-slider,
+      video::-webkit-media-controls-mute-button {
+        display: none;
+      }
+
+      /* Set height of controls to hide them completely if needed */
+      video::-webkit-media-controls {
+        height: 0 !important;
+        visibility: hidden;
+      }
+    </style>
 
     <script>
       var video = document.getElementById("myVideo");
