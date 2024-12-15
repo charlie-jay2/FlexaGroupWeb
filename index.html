@@ -48,13 +48,19 @@
     </div>
 
     <script>
-      var video = document.getElementById("myVideo");
+      // Wait for the page to load, then play the video
+      window.onload = function () {
+        var video = document.getElementById("myVideo");
+        video.play(); // Play the video when the page loads
+      };
+
       var playCount = 0;
 
-      video.onended = function () {
+      // Repeat video if it ends
+      document.getElementById("myVideo").onended = function () {
         playCount++;
         if (playCount < 2) {
-          video.play();
+          this.play(); // Replay the video once
         }
       };
     </script>
