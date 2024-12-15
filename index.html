@@ -49,31 +49,45 @@
     </div>
 
     <style>
-      /* Hide unwanted video controls */
-      video::-webkit-media-controls-current-time-display,
-      video::-webkit-media-controls-time-remaining-display,
+      /* Style the video timeline (progress bar) */
       video::-webkit-media-controls-timeline {
-        display: none;
+        background-color: transparent; /* Make the timeline background transparent */
+        color: aqua; /* Aqua for text like time labels */
+        border-radius: 5px; /* Optional: Rounded edges */
       }
 
-      /* Hide fullscreen button */
-      video::-webkit-media-controls-fullscreen-button {
-        display: none;
+      /* Style the current time display */
+      video::-webkit-media-controls-current-time-display {
+        color: aqua; /* Aqua for the current time */
       }
 
-      /* Hide volume controls */
-      video::-webkit-media-controls-volume-slider,
-      video::-webkit-media-controls-mute-button {
-        display: none;
+      /* Style the time remaining display */
+      video::-webkit-media-controls-time-remaining-display {
+        color: aqua; /* Aqua for the time remaining */
       }
 
-      /* Remove black gradient on video controls */
-      video::-webkit-media-controls-panel {
-        background: transparent;
+      /* Optional: Customize the timeline hover behavior */
+      video::-webkit-media-controls-timeline:hover {
+        background-color: rgba(0, 255, 255, 0.2); /* Light aqua on hover */
       }
 
+      /* Style the play/pause button */
+      video::-webkit-media-controls-play-button {
+        color: aqua !important; /* Aqua triangle/parallel lines */
+        background-color: transparent !important; /* Transparent background */
+        border: none !important; /* Remove borders */
+        width: 40px !important;
+        height: 40px !important;
+        opacity: 1 !important; /* Always visible */
+      }
+
+      /* Force visibility of controls */
       video::-webkit-media-controls {
-        background-color: transparent !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        opacity: 1 !important;
+        background: none !important;
       }
     </style>
 
