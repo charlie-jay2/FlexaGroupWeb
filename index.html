@@ -31,7 +31,6 @@
         id="myVideo"
         width="100%"
         height="auto"
-        autoplay
         playsinline
         controls
         controlsList="nodownload noplaybackrate novolume nofullscreen"
@@ -51,6 +50,7 @@
 
     <style>
       /* Hide unwanted video controls */
+      video::-webkit-media-controls-play-button,
       video::-webkit-media-controls-current-time-display,
       video::-webkit-media-controls-time-remaining-display,
       video::-webkit-media-controls-timeline {
@@ -67,16 +67,28 @@
       video::-webkit-media-controls-mute-button {
         display: none;
       }
+
+      /* Set height of controls to hide them completely if needed */
+      video::-webkit-media-controls {
+        height: 0 !important;
+        visibility: hidden;
+      }
     </style>
 
     <script>
       var video = document.getElementById("myVideo");
-      var playCount = 0;
+      var playCount = 0; // Track number of times video ends
 
+      // Autoplay the video when the page loads
+      window.onload = function () {
+        video.play();
+      };
+
+      // Loop once and stop after the second playback
       video.onended = function () {
         playCount++;
         if (playCount < 2) {
-          video.play();
+          video.play(); // Replay the video for the second time
         }
       };
     </script>
