@@ -33,6 +33,7 @@
         height="auto"
         autoplay
         playsinline
+        muted
         no-controls>
         <source
           src="https://www.flexagroup.co.uk/assets/vidcard.mp4"
@@ -50,10 +51,11 @@
     </div>
 
     <script>
-      // Wait for the page to load, then play the video
+      // Wait for the page to load, then play the video and unmute it
       window.onload = function () {
         var video = document.getElementById("myVideo");
         video.play(); // Play the video when the page loads
+        video.muted = false; // Unmute the video instantly
       };
 
       var playCount = 0;
