@@ -25,7 +25,7 @@ body {
 .button {
   position: absolute;
   bottom: 2px;
-  right: 36px;
+  right: 99px;
   transition: transform 0.3s ease-in-out;
 }
 

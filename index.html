@@ -28,9 +28,31 @@
 
     <link rel="stylesheet" href="styles.css" />
     <title>Reflection Bot</title>
+
+    <style>
+      /* Add a fade-out effect */
+      .fade-out {
+        opacity: 1;
+        transition: opacity 1s ease-out;
+      }
+
+      .hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .server-btn {
+        width: 300px;
+        margin-left: 115vh;
+        margin-top: 40vh;
+        height: auto;
+        z-index: 0; /* Default z-index */
+        transition: z-index 0s; /* Make sure it doesn't change before video ends */
+      }
+    </style>
   </head>
   <body>
-    <div class="video">
+    <div class="video" id="videoContainer">
       <video
         id="myVideo"
         width="100%"
@@ -49,38 +71,19 @@
         target="_blank">
         <img src="/assets/contact button.jpg" class="contact-btn" />
       </a>
-      <img src="/assets/add button.jpg" class="add-btn" />
+      <a href="https://discord.gg/U2tQA7UVeY" target="_blank"
+        ><img src="/assets/add button.jpg" class="add-btn"
+      /></a>
     </div>
 
-    <style>
-      /* Style the video timeline (progress bar) */
-      video::-webkit-media-controls {
-        background-color: transparent; /* Make the timeline background transparent */
-        color: black; /* Set text color to black (for time labels, etc.) */
-        border-radius: 5px; /* Optional: Rounded edges */
-      }
-
-      /* Style the controls panel with gradient and black text */
-      video::-webkit-media-controls-panel {
-        background: linear-gradient(
-          0deg,
-          /* Vertical gradient direction */ rgb(0, 255, 170) 0%,
-          /* Aqua fully opaque */ rgba(0, 255, 255, 0) 20%,
-          /* Fade to transparent after a small portion */ rgba(0, 0, 0, 0) 200%,
-          /* Transparent */ rgba(0, 0, 0, 1) 100% /* Black */
-        );
-        color: black; /* Make text in controls black */
-      }
-
-      /* Style the current time and duration text to be black */
-      video::-webkit-media-controls-current-time-display,
-      video::-webkit-media-controls-time-remaining-display {
-        color: black !important; /* Ensure the time text is black */
-      }
-    </style>
+    <a href="https://discord.gg/U2tQA7UVeY" target="_blank"
+      ><img src="/assets/join server button.jpeg" class="server-btn"
+    /></a>
 
     <script>
       var video = document.getElementById("myVideo");
+      var videoContainer = document.getElementById("videoContainer");
+      var serverBtn = document.querySelector(".server-btn");
       var playCount = 0; // Track number of times video ends
 
       // Autoplay the video when the page loads
@@ -91,8 +94,18 @@
       // Loop once and stop after the second playback
       video.onended = function () {
         playCount++;
-        if (playCount < 2) {
+        if (playCount < 1) {
           video.play(); // Replay the video for the second time
+        } else {
+          // After the second play, wait for 5 seconds, then fade and hide the video
+          setTimeout(function () {
+            // Apply fade-out effect
+            videoContainer.classList.add("fade-out");
+            setTimeout(function () {
+              videoContainer.classList.add("hidden"); // Completely hide the video container after fading
+              serverBtn.style.zIndex = "1000"; // Bring the server button on top
+            }, 1000); // Wait for the fade transition to complete
+          }, 1000); // Wait 5 seconds before starting the fade-out
         }
       };
     </script>
