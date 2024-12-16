@@ -26,108 +26,82 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="assets/logo-favicon.png" type="image/png" />
 
+    <!-- Link to external stylesheet -->
     <link rel="stylesheet" href="styles.css" />
     <title>Reflection Bot</title>
 
     <style>
-      /* Add a fade-out effect */
-      .fade-out {
-        opacity: 1;
-        transition: opacity 1s ease-out;
+      /* Base Styles */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: url("assets/Site Background.jpeg") no-repeat center center
+          fixed;
+        background-size: cover;
+        overflow-x: hidden;
       }
 
       .hidden {
-        opacity: 0;
-        visibility: hidden;
+        display: none;
       }
 
-      .textbox-container {
-        position: relative; /* Makes this the reference for positioning */
-        width: 500px; /* Match container width */
-        height: 500px;
-        margin: 15vh 0 0 10vh;
+      /* Mobile Message Container */
+      .mobile-message-container {
+        display: none; /* Hidden by default */
+        text-align: center;
+        color: white;
+        font-size: 1.5rem;
+        background: black;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px; /* Space between lines */
       }
 
-      .textbox {
-        width: 80%; /* Fit container */
-        height: auto;
+      .mobile-link a {
+        color: #ffcc00;
+        text-decoration: underline;
       }
 
-      .textboxtext {
-        position: absolute;
-        top: 19%; /* Adjust higher */
-        left: 5%;
-        z-index: 1000;
-        width: 70%; /* Relative to container */
+      /* Desktop Styles */
+      @media screen and (min-width: 769px) {
+        .mobile-message-container {
+          display: none; /* Hide on desktop */
+        }
       }
 
-      .textboxbutton {
-        position: absolute;
-        top: 72%; /* Adjust higher */
-        left: 6.5%;
-        z-index: 1000;
-        width: 25%; /* Relative to container */
-        transition: transform 0.6s ease-in-out;
-      }
-
-      .textboxbutton:hover {
-        transform: scale(1.05); /* Slightly enlarge buttons on hover */
-        transition: transform 0.6s ease-in-out;
-      }
-
-      .button1,
-      .button2,
-      .button3 {
-        display: block; /* Stack the buttons vertically */
-        width: 360px; /* Keeps the button width consistent */
-        height: auto;
-        margin-bottom: 5px; /* Tiny gap between buttons */
-        transition: transform 0.6s ease-in-out;
-        z-index: 1000;
-      }
-
-      .button1 {
-        opacity: 0.6;
-      }
-
-      /* Hover effect for button2 and button3 */
-      .button2:hover,
-      .button3:hover {
-        transform: scale(1.05); /* Slightly enlarge buttons on hover */
-        transition: transform 0.6s ease-in-out; /* Ensure smooth transition on hover */
-        cursor: pointer;
-      }
-
-      .button-container {
-        position: absolute;
-        top: 14%; /* Adjust higher */
-        left: 70%;
-        z-index: 1000;
-      }
-
-      @media (max-width: 768px) {
+      /* Mobile Styles */
+      @media screen and (max-width: 768px) {
         body {
-          background-image: url("./assets/mobile/Phone_site_background_1.jpeg"); /* Use mobile-specific background */
-          background-size: cover;
-          background-position: -5% center; /* Move background 2% to the left */
-          background-repeat: no-repeat;
-        }
-        .textbox-container,
-        .textbox,
-        .textboxtext {
-          opacity: 0;
+          background: none; /* Remove background image */
+          background-color: black; /* Set a solid black background */
         }
 
-        .button-container {
-          left: 2.6%;
-          transform: scale(0.9);
+        .textbox-container,
+        .button-container,
+        audio {
+          display: none; /* Hide all content */
+        }
+
+        .mobile-message-container {
+          display: flex; /* Show mobile message container */
         }
 
         .textboxbutton {
-          margin-left: 27%;
-          margin-top: 20%;
+          opacity: 1;
           transform: scale(3);
-          z-index: 1000;
+          margin-left: 15vh;
+          top: 60%;
+        }
+
+        .textboxbutton:hover {
+          opacity: 1;
+          transform: scale(3.2);
+          margin-left: 15vh;
+          top: 60%;
         }
       }
     </style>
@@ -135,6 +109,7 @@
   <body>
     <audio id="audio" src="./assets/induction.wav" preload="auto"></audio>
 
+    <!-- Desktop Content -->
     <div class="textbox-container">
       <img src="./assets/text/textbox.png" class="textbox" draggable="false" />
       <img
@@ -142,29 +117,42 @@
         class="textboxtext"
         draggable="false" />
     </div>
+
     <img
       src="./assets/text/coming_2025.png"
       class="textboxbutton"
       draggable="false" />
+
     <div class="button-container">
       <img
         src="./assets/Buttons/ADD REFLECTION TO YOUR SERVER.png"
         class="button1"
         draggable="false" />
-      <a
+      <a href="#"
         ><img
           src="./assets/Buttons/GET IN TOUCH.png"
           class="button2"
           draggable="false"
       /></a>
-      <a
+      <a href="#"
         ><img
           src="./assets/Buttons/JOIN THE OFFICIAL COMMUNITY.png"
           class="button3"
           draggable="false"
       /></a>
     </div>
+
+    <!-- Mobile Message -->
+    <div class="mobile-message-container">
+      <div>This site is unavailable for mobile.</div>
+      <div>Add the bot here -- Unavailable</div>
+      <div>
+        Join the Discord
+        <a href="https://discord.gg/5jkuhd79QV">here</a>
+      </div>
+    </div>
   </body>
+
   <script>
     // Play the audio only once when the page loads
     window.onload = function () {

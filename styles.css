@@ -1,20 +1,74 @@
+/* General styles for body */
 html,
 body {
   height: 100%;
   margin: 0;
   overflow: hidden;
-  background-image: linear-gradient(
-    to bottom,
-    #794d11,
-    black 40%
-  ); /* Gradient from A76C1A to black at 50% */
+  background-image: linear-gradient(to bottom, #794d11, black 40%);
 }
 
 body {
   background-image: url("assets/Site Background.jpeg");
-  background-size: cover; /* Ensures the image covers the entire screen */
-  background-position: center; /* Centers the image */
-  background-repeat: no-repeat; /* Prevents the image from repeating */
-  height: 100%; /* Sets height to the full viewport height */
-  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Textbox container */
+.textbox-container {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  margin: 15vh 0 0 10vh;
+}
+
+.textbox {
+  width: 80%;
+}
+
+.textboxtext {
+  position: absolute;
+  top: 19%;
+  left: 5%;
+  width: 70%;
+  z-index: 1000;
+}
+
+.textboxbutton {
+  position: absolute;
+  top: 72%;
+  left: 6.5%;
+  width: 25%;
+  transition: transform 0.6s ease-in-out;
+}
+
+.textboxbutton:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+/* Buttons */
+.button-container {
+  position: absolute;
+  top: 14%;
+  left: 70%;
+}
+
+.button1,
+.button2,
+.button3 {
+  display: block;
+  width: 360px;
+  margin-bottom: 5px;
+  transition: transform 0.6s ease-in-out;
+}
+
+.button1 {
+  opacity: 0.6;
+}
+
+.button2:hover,
+.button3:hover {
+  transform: scale(1.05);
+  cursor: pointer;
 }
