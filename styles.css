@@ -24,6 +24,11 @@ body {
 
 .textbox {
   width: 80%;
+  transition: transform 0.6s ease-in-out;
+}
+
+.textbox:hover {
+  transform: scale(1.04);
 }
 
 .textboxtext {
