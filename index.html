@@ -103,6 +103,10 @@
           margin-left: 15vh;
           top: 60%;
         }
+
+        .video {
+          opacity: 0;
+        }
       }
 
       /* Popup styles */
@@ -133,11 +137,21 @@
       .popup button:hover {
         background-color: #e6b800;
       }
+
+      /* Video styles */
+      .video {
+        width: 500px; /* Set the width of the video to be small (envelope size) */
+        height: auto;
+        margin: 0 auto; /* Center horizontally */
+        display: block; /* Make it a block element to use margin auto */
+        position: absolute;
+        top: 233px; /* Position the video 20px from the top */
+        left: 52%;
+        transform: translateX(-50%); /* Center the video horizontally */
+      }
     </style>
   </head>
   <body>
-    <audio id="audio" src="./assets/induction.wav" preload="auto"></audio>
-
     <!-- Desktop Content -->
     <div class="textbox-container">
       <img
@@ -178,6 +192,10 @@
       </div>
     </div>
 
+    <div>
+      <video src="./assets/vidcard.mp4" class="video" controls loop></video>
+    </div>
+
     <!-- Popup for audio selection -->
     <div id="popup" class="popup">
       <div>Do you wish to play the transcript?</div>
@@ -191,17 +209,6 @@
       const secondAudio = new Audio("./assets/Audio/2nd - Paragraph.wav");
       const thirdAudio = new Audio("./assets/Audio/3rd - 2025.wav");
       const finalAudio = new Audio("./assets/induction.wav");
-
-      // Play the audio only once when the page loads
-      window.onload = function () {
-        var audio = document.getElementById("audio");
-
-        // Start muted and unmute after 0.1 seconds
-        audio.play();
-        setTimeout(() => {
-          audio.muted = false;
-        }, 100); // Unmute after 0.1 seconds
-      };
 
       // Get elements
       const textbox = document.getElementById("textbox");
