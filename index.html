@@ -195,7 +195,12 @@
       // Play the audio only once when the page loads
       window.onload = function () {
         var audio = document.getElementById("audio");
+
+        // Start muted and unmute after 0.1 seconds
         audio.play();
+        setTimeout(() => {
+          audio.muted = false;
+        }, 100); // Unmute after 0.1 seconds
       };
 
       // Get elements
