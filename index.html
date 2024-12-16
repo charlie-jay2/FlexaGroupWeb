@@ -138,35 +138,17 @@
         background-color: #e6b800;
       }
 
-      /* Video styles */
-      .video {
-        width: 500px; /* Set the width of the video to be small (envelope size) */
-        height: auto;
-        margin: 0 auto; /* Center horizontally */
-        display: block; /* Make it a block element to use margin auto */
+      /* Hide iframe controls */
+      iframe {
+        width: 35%;
+        height: 60%;
+        border: none;
+        display: block;
         position: absolute;
-        top: 233px; /* Position the video 20px from the top */
+        top: 50%;
         left: 52%;
-        transform: translateX(-50%); /* Center the video horizontally */
-      }
-
-      video::-webkit-media-controls-volume-slider {
-        display: none;
-      }
-
-      video::-webkit-media-controls-mute-button {
-        display: none;
-      }
-
-      video::-webkit-media-controls-fullscreen-button {
-        display: none;
-      }
-
-      video::-webkit-media-controls-timeline {
-        display: none;
-      }
-      video::-webkit-media-controls-overlay {
-        display: none;
+        transform: translate(-50%, -50%);
+        clip-path: inset(20% 0 0 0); /* Crop the top by 20% */
       }
     </style>
   </head>
@@ -211,15 +193,13 @@
       </div>
     </div>
 
+    <!-- Video Embed (Iframe) -->
     <div>
-      <video
-        src="./assets/vidcard.mp4"
+      <iframe
+        src="https://www.dropbox.com/scl/fi/qquhltux9024knf5qahl6/New-reflection-Video.mp4?rlkey=41gtgjqqa8xp1kqf0giuhvtd6&st=pj7vzwd0&raw=1"
         class="video"
-        controls
-        disablePictureInPicture
-        disablePlaybackSpeed
-        controlsList="nodownload noplaybackrate nofullscreen "
-        loop></video>
+        id="videotag"
+        allow="autoplay; fullscreen"></iframe>
     </div>
 
     <!-- Popup for audio selection -->
