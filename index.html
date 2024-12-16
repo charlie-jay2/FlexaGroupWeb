@@ -186,6 +186,12 @@
     </div>
 
     <script>
+      // Declare audio variables outside of the playAudioSequence function
+      const firstAudio = new Audio("./assets/Audio/First - Style.wav");
+      const secondAudio = new Audio("./assets/Audio/2nd - Paragraph.wav");
+      const thirdAudio = new Audio("./assets/Audio/3rd - 2025.wav");
+      const finalAudio = new Audio("./assets/induction.wav");
+
       // Play the audio only once when the page loads
       window.onload = function () {
         var audio = document.getElementById("audio");
@@ -200,11 +206,6 @@
 
       // Function to play the audio sequence
       const playAudioSequence = () => {
-        const firstAudio = new Audio("./assets/Audio/First - Style.wav");
-        const secondAudio = new Audio("./assets/Audio/2nd - Paragraph.wav");
-        const thirdAudio = new Audio("./assets/Audio/3rd - 2025.wav");
-        const finalAudio = new Audio("./assets/induction.wav");
-
         // Play the first audio
         firstAudio.play();
 
