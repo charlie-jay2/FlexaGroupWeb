@@ -164,7 +164,7 @@
           const discordUsername =
             document.getElementById("discord-username").value;
 
-          const response = await fetch("/.vercel/functions/stripe", {
+          const response = await fetch(".vercel/functions/stripe", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
