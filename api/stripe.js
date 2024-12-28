@@ -1,5 +1,4 @@
-// ./netlify/functions/stripe.js
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); // Replace with your Stripe secret key
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); // Use the secret key from environment variables
 const querystring = require('querystring');
 
 exports.handler = async (event, context) => {
@@ -8,8 +7,8 @@ exports.handler = async (event, context) => {
             const { token, discordUsername } = JSON.parse(event.body);
 
             // Create a payment intent and charge the card
-            const charge = await stripe.paymentIntents.create({
-                amount: 800, // The amount in cents (500 = $5.00)
+            const paymentIntent = await stripe.paymentIntents.create({
+                amount: 800, // The amount in cents (800 = £8.00)
                 currency: 'gbp',
                 payment_method: token,
                 confirmation_method: 'manual',
@@ -17,13 +16,25 @@ exports.handler = async (event, context) => {
                 description: `Payment from ${discordUsername}`,
             });
 
-            // Handle the charge response
-            if (charge.status === 'succeeded') {
+            // Check the payment status
+            if (paymentIntent.status === 'succeeded') {
+                // Payment succeeded
                 return {
                     statusCode: 200,
                     body: JSON.stringify({ success: true }),
                 };
+            } else if (paymentIntent.status === 'requires_action' || paymentIntent.status === 'requires_source_action') {
+                // If the payment requires further action (e.g., 3D Secure)
+                return {
+                    statusCode: 200,
+                    body: JSON.stringify({
+                        success: true,
+                        requiresAction: true,
+                        paymentIntentClientSecret: paymentIntent.client_secret,
+                    }),
+                };
             } else {
+                // Payment failed
                 return {
                     statusCode: 400,
                     body: JSON.stringify({ success: false, message: 'Payment failed' }),

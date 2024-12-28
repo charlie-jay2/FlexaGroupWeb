@@ -160,11 +160,11 @@
           // Display error message
           statusDiv.innerHTML = `Error: ${error.message}`;
         } else {
-          // Send the token and Discord username to the Netlify function
           const discordUsername =
             document.getElementById("discord-username").value;
 
-          const response = await fetch(".vercel/functions/stripe", {
+          const response = await fetch("/api/stripe", {
+            // Vercel function endpoint
             method: "POST",
             headers: {
               "Content-Type": "application/json",
