@@ -1,10 +1,14 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); // Use the secret key from environment variables
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const querystring = require('querystring');
 
 exports.handler = async (event, context) => {
     if (event.httpMethod === 'POST') {
         try {
             const { token, discordUsername } = JSON.parse(event.body);
+
+            if (!token || !discordUsername) {
+                throw new Error("Missing required fields: token or discordUsername.");
+            }
 
             // Create a payment intent and charge the card
             const paymentIntent = await stripe.paymentIntents.create({
@@ -18,13 +22,11 @@ exports.handler = async (event, context) => {
 
             // Check the payment status
             if (paymentIntent.status === 'succeeded') {
-                // Payment succeeded
                 return {
                     statusCode: 200,
                     body: JSON.stringify({ success: true }),
                 };
             } else if (paymentIntent.status === 'requires_action' || paymentIntent.status === 'requires_source_action') {
-                // If the payment requires further action (e.g., 3D Secure)
                 return {
                     statusCode: 200,
                     body: JSON.stringify({
@@ -34,7 +36,6 @@ exports.handler = async (event, context) => {
                     }),
                 };
             } else {
-                // Payment failed
                 return {
                     statusCode: 400,
                     body: JSON.stringify({ success: false, message: 'Payment failed' }),
